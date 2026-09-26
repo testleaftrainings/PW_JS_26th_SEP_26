@@ -1,0 +1,250 @@
+Agenda for Week1 Day1
+
+
+JavaScript Introduction
+Break
+DataTypes
+Break out
+Variable declaration with var, let and const
+Hoisting
+Scoping
+
+
+1. Web application :
+
+
+=> Static Application(HTML+CSS)
+=> Dynamic Application(HTML+CSS+JS)
+
+1. HTML (Hyper Test Markup Language) Tags => Define the structure of the web application.
+2. CSS(Cascading Style Sheet) => Colours in a application.
+3. JavaScript => Interactivity(Event Driven Model)=> Click action is an event driven and JS reponds.
+
+
+2. Validation
+
+2.a. Front End Validation => checks for the format of an username / email / data input
+
+=> JavaScript was used to do the front end validation
+
+
+2.b. Back End Validation => checks the record present in backend server (GitHub server)
+
+
+3. Asynchronous / Non-blocking IO try in console of the browser :
+
+console.log("Step1")
+setTimeout(()=>{console.log("Step2")},3000)
+console.log("Step3")
+
+Output:
+
+ Step1
+ Step3
+ Step2
+
+
+4. Event-Driven Programming Model
+
+Event-driven programming means the application is reactive and responds to events/actions.
+JavaScript waits for events like clicks, keypresses, or messages and executes the corresponding 
+event handler when the event occurs.
+
+
+DataTypes in JavaScript
+--------------------------
+
+DataTypes: A data type defines the type of value a variable can store and the operations that 
+can be performed on that value.
+
+Primitive DataTypes: A primitive is a basic data type that holds a single immutable value and is 
+not an object.
+
+1) Number
+
+The Number data type is used to store all kinds of numeric values, including whole 
+numbers and decimal numbers.
+
+Example
+var age = 25;
+var Price=99.99
+
+2) String
+
+Stores a sequence of characters or text values. A string is can be written inside single 
+quotes (' '), double quotes (" "), or backticks (` `).
+
+var name = "John";
+var city = 'Chennai';
+var message = `Welcome to Playwright`;
+
+3) Boolean
+
+The Boolean data type is used when a value can have only two possible states: 
+true or false. It is commonly used in conditions and decision making.
+
+let isLoggedIn = true;
+let isCompleted = false;
+
+4) undefined
+
+The undefined data type means the variable exists, but no value has been given yet.
+
+var age;
+console.log(age); // undefined
+
+5) Null
+
+The null data type is used when we intentionally set a variable to have no value.
+var user = null;
+console.log(user); // null
+
+6) Big Int
+
+Used to store very large integers beyond the safe limit of Number.
+
+JavaScript number safe range is from -(2^53 - 1) to (2^53 - 1)
+-9007199254740991 to 9007199254740991
+
+If you go beyond this range — JS loses precision
+var num = 9007199254740992;
+
+JavaScript **can't guarantee accuracy**, and you'll get the `ts(80008)` warning in 
+TypeScript because the value might be **rounded**, **inaccurate**, or **unexpected**.
+
+• BigInt is used for very large integers
+• Add n at the end of the number to create BigInt
+• BigInt does not have the safe integer limit like Number
+• Cannot mix Number and BigInt directly in operations
+
+
+Non Primitive DataTypes
+------------------------
+Non-primitive data types are complex data types that can store multiple values.
+They are mutable and stored by reference.
+
+1) Array
+--------
+
+Used to store multiple values in a single variable.
+
+let numbers = [10, 20, 30, 40];
+console.log(numbers[0]); // 10
+
+2) object
+---------
+
+Stores data in key–value pairs.
+
+let user = {
+  name: "Sindhu",
+  age: 25
+};
+
+console.log(user.name); // Sindhu
+
+Variable declaration with Var, Let and const
+-----------------------------------------------
+
+Variable declaration means creating a variable to store data in memory.
+
+// Declaration : creating variable
+var name
+
+// Initialization :assigning value
+name = "Sindhu"
+
+
+// Declaration + Initialization
+var age = 25
+
+console.log(name); // Sindhu
+console.log(age);  // 25
+
+
+1) Variable declaration with var Keyword
+
+var-> can be redeclared and reassigned
+
+2) Variable declaration with let Keyword
+
+let-> cannot be redeclared but can be reassigned
+
+3) Variable declaration with const Keyword
+
+const-> cannot be redeclared and cannot be reassigned
+
+
+Hoisting
+--------
+
+Hoisting is the default behavior of JavaScript where declarations are moved to the 
+top of their scope during the memory creation phase before execution.
+
+var -> Hoisted and initialized with undefined
+let-> Hoisted but not initialized → accessing before declaration gives ReferenceError (TDZ)
+const-> Hoisted but not initialized → accessing before declaration gives ReferenceError (TDZ)
+
+TDZ(Temporal dead zone)-> The time period between hoisting and initialization of a variable, where
+it cannot be accessed.
+
+Scoping
+-----------
+
+Scope refers to the visibility or accessibility of a variable in the code.
+It defines where a variable can be accessed and used.
+
+Types of scope:
+--------------
+
+a. Global scope :
+
+Variables declared outside any function or block.
+Accessible from anywhere in the program.
+
+let name = "JavaScript";
+
+function display() {
+    console.log(name);
+}
+
+display();
+console.log(name);
+
+b. Function scope :
+
+Variables declared inside a function.
+Accessible only within that function.
+Cannot be accessed outside the function
+
+function greet() {
+    let message = "Hello";
+
+    console.log(message);
+}
+
+greet();
+
+
+c. Block scope :
+
+Variables declared inside a block { }
+Applicable to let and const
+Accessible only within that block
+
+{
+    let age = 25;
+    console.log(age);
+}
+
+age is Accessible, only inside the block {}
+
+ex:
+
+if(true){
+    let status = "Active";
+    console.log(status) //Accessible
+}
+console.log(status); // Error
+
+
