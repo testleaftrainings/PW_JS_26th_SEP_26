@@ -1,0 +1,240 @@
+Session Agenda for Week4 Day1 : Playwright Selectors, codegen, StorageState and Alerts 
+
+Playwright Selectors
+codegen
+Breakout
+storageState
+Breakout
+Alerts
+Breakout
+
+
+Playwright Locators:
+--------------------
+Playwright locators are built-in methods to find and interact with elements on a webpage. 
+They provide a more efficient and reliable way to locate elements compared to traditional methods 
+like XPaths or CSS selectors.
+
+
+Types of Playwright Locators:
+-----------------------------
+
+1) getByRole(): Uses accessibility roles to locate elements. 
+It is based on the ARIA (Accessible Rich Internet Applications) roles and is useful for finding 
+elements that have specific roles, such as buttons, links, or form controls.
+
+Ex: await page.getByRole('button', { name: 'Login' }).click()
+
+2) getByText()
+Based on visible text of the element. 
+
+Ex: await page.getByText('Login').click()
+
+3) getByLabel()
+For input fields with label
+
+Ex: await page.getByLabel('Username').fill('admin')
+
+4)getByPlaceholder()
+For input fields with placeholder attribute
+
+Ex: await page.getByPlaceholder('Enter username').fill('admin')
+
+5) getByAltText()
+For images with alt text(alternate or equivalent text) attribute.
+ It is used to locate images based on their alt text, which is a descriptive text that provides 
+ information about the image for accessibility purposes.
+
+Ex: await page.getByAltText('Company Logo').click()
+
+6)getByTitle()
+For elements with title attribute 
+
+Ex: await page.getByTitle('Submit Button').click()
+
+7) getByTestId()
+For elements with data-testid attribute, commonly used in testing frameworks to uniquely identify 
+elements. morereliable than other locators because it is less likely to change during UI updates. 
+
+Ex: await page.getByTestId('login-button').click()
+
+codegen:
+--------
+
+Playwright feature that records browser interactions and generates Playwright test scripts 
+automatically.
+
+command: npx playwright codegen --browser=firefox
+
+Pros:
+-----
+
+Fast
+Easy
+Automatic
+Beginner-friendly
+Time-saving
+
+Cons:
+-----
+
+Unoptimized → Inefficient code.
+Fragile → Easily breaks.
+Verbose → Lengthy code with unnecessary lines.
+Unmaintainable → Difficult to modify or debug.
+Limited → Supports only a few scenarios or features
+
+>> Difference between ARIA Snapshot and Screenshot
+
+| ARIA Snapshot          | Screenshot                          |
+| ---------------------- | ----------------------------------- |
+| Checks structure       | Checks appearance                   |
+| Stored as text         | Stored as image                     |
+| Less flaky             | Can fail due to tiny visual changes |
+| Good for accessibility | Good for visual validation          |
+
+
+
+Activity:
+---------
+
+Classroom 1: Write the typescript code to login to Leaftaps application using Playwright locators.
+
+
+URL : https://leaftaps.com/opentaps/control/main
+Username: democsr2
+Password: crmsfa
+
+
+storageState:
+-------------
+
+Storage State is a Playwright feature used to save and restore a browser context's authentication 
+data, such as cookies and local storage, into a JSON file. This allows tests to reuse an existing
+user session, bypass the login process, and start with an authenticated session without logging in 
+again.
+
+steps:
+------
+Stores cookies and local storage data.
+Saved as a JSON file (e.g., auth.json).
+Helps reuse authenticated sessions across tests.
+Eliminates the need to perform login repeatedly.
+Improves test execution speed and stability.
+
+Browser stores.
+ ├─ Cookies -> Used to store authentication/session information shared with the server.
+ ├─ Local Storage -> Used to store persistent client-side data across browser sessions.
+ ├─ Session Storage-> Used to store temporary tab-specific data until the tab is closed.
+
+
+// Save authenticated session
+await page.context().storageState({
+  path: 'auth.json'
+});
+
+// Reuse authenticated session
+
+(with Browser instance)
+const browser = await chromium.launch(); 
+const context = await browser.newContext({ storageState: 'user.json' });
+const page = await context.newPage();
+
+or 
+(with page fixture)
+test.use({
+  storageState: 'Data/user.json'
+});
+
+Note:Storage State is valid until the stored session cookies or auth tokens expire or become invalid.
+
+
+Alerts /Dialogs:
+---------------
+
+Alerts are pop-up or dialog boxes that appear on the browser to get user attention or input.
+
+types
+-----
+
+a) Modal alerts(not inspectable)
+--------------------------------
+
+A modal dialog forces the user to interact with it before returning to the application.
+
+Blocks the webpage
+Prevents interaction with background content
+Requires immediate response
+
+
+1) simple-ok
+ex: alert("Login Successful")
+
+2) confirmation-ok and cancel
+ex: confirm("Are you sure?")
+
+3) prompt-ok, cancel and input textbox
+ex: prompt("Enter your name")
+
+
+b) Non modal alerts (inspectabe)
+--------------------------------
+
+A non-modal dialog does not block the application.
+
+User can continue interacting with the page
+Can stay open while working
+
+1) Sweet-dismiss
+
+ex: Need help?,  //can be ignored.
+
+
+Syntax:
+-------
+
+page.on('dialog', async dialog => { ... }) → Listen and handle.
+
+await dialog.accept([promptText]) → Accept dialog (optionally providing input for prompts).
+await dialog.dismiss() → Cancel dialog.
+
+Event Listeners
+--------------
+An event listener is a function that waits for a specific event (like click, input, alert) and 
+executes code when that event happens.
+
+Syntax: page.on(eventName, callback) or page.once(eventName, callback)
+
+------------------------------------------------------------------------------------
+
+page.once()
+---------
+
+page.once() registers an event listener that runs only the first time the event occurs, then it 
+automatically stops listening.
+
+page.once('eventName', async (event) => {
+   // handle event
+});
+
+
+page.on()
+---------
+page.on() registers an event listener that will run every time the event occurs.
+
+//Handles all the alerts in the page.
+
+page.on('eventName', async (event) => {
+   // handle event
+});
+
+
+Classroom 2: 
+
+Launch the URL: https://www.leafground.com/alert.xhtml
+Click on Prompt Dialog.
+Switch to the JavaScript prompt alert.
+Enter a value using accept("Testleaf").
+ 
+
+ 
