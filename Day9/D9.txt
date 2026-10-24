@@ -1,0 +1,210 @@
+Session Agenda for Week5 Day1: Object Literal,Type Alias and  Window Handling
+
+Object literal
+Type Alias(Union)
+Breakout
+Type Intersection
+Enum 
+Optional Parameter
+Break
+Window Handling
+Breakout
+                    
+
+
+Object Literal:
+---------------
+
+An object literal is a direct way of creating an object using key-value pairs enclosed within curly
+braces {}
+
+object testData
+
+let testData = {
+  username: "admin",  //key:value pair
+  password: "admin123",
+  role: "QA"
+};
+
+usage:
+------
+await page.fill("#username", testData.username);
+await page.fill("#password", testData.password);
+
+
+type Alias:
+-----------
+
+A type alias in TypeScript is a way to create a new name for an existing type. It allows you to 
+define a custom type that can be used throughout your codebase, making it easier to manage and 
+maintain complex types.
+
+type user ={
+firstname : string
+lastname : string
+mobnumber : number
+}
+
+let user1 :user ={firstname : 'sekar', lastname: 'y', mobnumber:987656778}
+let user2 :user={firstname : 'sruthi', lastname: 'r', mobnumber:807656770}
+
+
+types:
+------
+
+1. Union types
+2. Intersection types
+
+Union Types
+-----------
+
+Union Type allows a variable, parameter, or property to hold more than one type or value.
+
+type Id = string | number   
+
+let userId: Id;
+
+userId = "EMP101";   // valid
+userId = 1001;       // valid
+userId= true  //not valid
+
+console.log(userId) //1001
+
+
+
+Classroom activity 1
+ -------------------
+
+ 1.Create a TypeScript program to handle different payment methods using a Union Type.
+
+- Create a function that accepts only specific payment methods.
+
+- Create a type alias called PaymentMethod that allows only "UPI", "CreditCard", or "PayPal".
+
+- Write a function makePayment that takes a parameter of type PaymentMethod and prints which payment
+  method is chosen.
+
+- Call the function with "UPI" and "CreditCard" as arguments.
+
+Type Intersection
+-----------------
+
+Intersection type combines multiple types into one, meaning the value must satisfy all the types 
+together.
+
+ex:
+type User = { name: string }
+
+type Contact = { phone: number }
+
+type UserContact = User & Contact
+
+let UserContactdetails:UserContact={
+name:"Anitha",
+phone: 735808765
+}
+
+console.log(UserContactdetails.phone) //735808765
+
+
+Enum/Enumeration
+-----------------
+enum is a feature in TypeScript that allows you to define a set of named constants.
+
+enum types:
+----------
+Numeric enum(default)
+String enum
+Heterogenious enum
+
+Ex:
+enum environment{
+qa
+prod
+}
+
+let env:environment=environment.qa
+console.log(env)
+
+optional parameter:
+------------------
+
+An optional parameter allows a function to accept an argument optionally; if it isn't passed, its 
+value is undefined.
+
+function greet(name: string, city?: string) {
+  console.log(`Hello ${name}`);
+}
+
+greet("Bala");            
+greet("Bala", "Chennai"); 
+
+
+Window Handling: Managing and interacting with multiple browser tabs or windows using Page objects, 
+enabling the automation script to switch and perform actions in the correct window.
+
+Window Handling using Event Listener + Promise
+----------------------------------------------
+
+Create Promise - Wait for new window(event listener)
+Trigger Action - Perform Click action
+Resolve Promise - Switch control parent → child window 
+
+
+1) Sequential Approach
+
+Handle windows one by one, waiting for each window/tab to open and complete actions before moving to
+the next.
+Simple, predictable, easy to debug.
+
+
+2) Concurrent Approach
+
+Handle multiple windows/tabs at the same time, without waiting for one to finish before starting another.
+Uses Promise.all() to run multiple operations concurrently.
+
+const [childPage] = await Promise.all([context.waitForEvent('page'),page.locator(`//div[text()="POCO C71 (Desert Gold, 
+64 GB)"]`).click()])
+
+
+Note: Concurrent Approach is Preferred in Playwright because it ensures no events are missed, 
+even when actions run fast.
+
+context.pages();
+---------------
+Returns all open pages in the context
+
+page.bringToFront()
+--------------------
+Brings a tab to the foreground and makes it the active page, but does not close it — used when 
+multiple tabs are open and you want to interact with a specific one.
+
+swtich -> child window
+
+page.close()
+------------
+
+Closes the current tab/page completely and removes it from the browser context — used when the tab 
+is no longer needed.
+
+
+Classroom Activity 2 : Playwright Window Handling
+
+Application: https://www.leafground.com/window.xhtml
+
+Objective: Handle a single child window and interact with elements in the child page.
+Steps
+
+1. Launch the URL:
+   https://www.leafground.com/window.xhtml
+2. Handle the single window scenario.
+   - Click Open.
+   - Capture the newly opened child page.
+   - Print the title of the main page.
+   - Print the title of the child page.
+3. Switch to the child page.
+4. Inspect the Email field and enter your email address.
+5. Inspect the Message field and enter:
+   "Playwright window handling"
+
+
