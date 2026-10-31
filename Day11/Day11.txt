@@ -1,0 +1,387 @@
+Session Agenda for Week6 Day1: Hooks, Test Annotations, and Introduction to OOPS 
+
+Hooks(Pre/Post conditions)
+Test Annotations
+Types of annotations (skip, only, fixme, fail, slow)
+Breakout
+OOPs Basics
+Access Modifiers
+Breakout
+
+
+Test Annotation(Hooks)
+----------------------
+Hooks are special methods in Playwright that execute before or after test execution to handle 
+setup and cleanup activities, thereby controlling the execution flow.
+
+Types of Hooks:
+---------------
+
+1) test.beforeAll
+→ Executes once before all tests in a file
+  Used for global setup (ex: data connectivity or test data setup)
+
+2) test.beforeEach
+→ Executes before every test
+  Used for common pre-conditions (ex: login and navigation)
+
+3) test modules
+
+4) test.afterEach
+→ Executes after every test
+  Used for cleanup (ex: logout, clearing data, screenshots on failure)
+
+5) test.afterAll
+→ Executes once after all tests
+  Used for global cleanup (ex: closing connections, removing test data)
+
+
+Test Annotations:
+-----------------
+
+Test annotations are used to configure the behavior of a test during execution
+
+test.only() -> Execute only this test and ignore the rest.
+ex:
+test.only('test name', async ({ page }) => {
+   // test steps
+});
+
+
+test.skip() -> is a Playwright test annotation used to skip a specific test, so Playwright will 
+not execute it.
+ex:
+test.skip('test name', async ({ page }) => {
+   // test steps
+});
+
+
+test.fail() -> is a Playwright test annotation used when you expect the test to fail.
+ex:
+test.fail('test name', async ({ page }) => {
+   // test steps
+});
+
+Note:
+-----
+If the test fails → Playwright marks it as passed (because failure was expected).
+If the test passes → Playwright marks it as failed.
+
+
+test.fixme() -> is a Playwright test annotation used when a test is known to be broken or not 
+ready, and you want Playwright to skip it temporarily
+ex:
+test.fixme('test name', async ({ page }) => {
+  // test steps
+});
+
+
+test.use() -> override context /test.use() is used to apply specific configuration settings for a
+test or group of tests
+ex:
+test.use({ storageState: 'loginAuth.json' });
+
+test('Open Home Page', async ({ page }) => {
+  await page.goto('https://example.com/home');
+});
+
+
+
+test.info -> it shows additional information/metadata about the test during execution of test.
+import { test, expect } from '@playwright/test';
+
+test('Login Test', async ({ page }) => {
+
+  console.log(test.info().title);      //Login Test
+
+  await page.goto('https://example.com');
+});  
+
+
+
+test.slow-> Playwright test annotation used to mark a test as slow, so Playwright increases the 
+timeout for that test.
+
+ex:
+import { test, expect } from '@playwright/test';
+test('Slow loading page test', async ({ page }) => {
+
+  test.slow(); // marks this test as slow
+
+  await page.goto('https://example.com');
+  await page.waitForTimeout(20000); // simulate slow operation
+});
+
+
+test.describe() -> test.describe() in Playwright is used to group multiple related tests together.
+ex:
+test.describe('Group Name', () => {
+
+  test('Test 1', async ({ page }) => {
+    // steps
+  });
+
+  test('Test 2', async ({ page }) => {
+    // steps
+  });
+});
+
+
+test.describe.config({mode:'parallel'}):
+---------------------------------------
+Used in Playwright to run all tests inside the describe block in parallel.
+ex:  
+import { test, expect } from '@playwright/test';
+
+test.describe('Leads Module', () => {
+
+  test.describe.configure({ mode: 'parallel' });
+
+  test('Create Lead', async ({ page }) => {
+    console.log('Create Lead Test');
+  });
+
+  test('Edit Lead', async ({ page }) => {
+    console.log('Edit Lead Test');
+  });
+});
+
+
+test.describe.config({mode:'serial'}):
+-------------------------------------
+Runs all tests inside the describe block one after another in sequential order.
+ex:
+import { test, expect } from '@playwright/test';
+
+test.describe('Leads Workflow', () => {
+
+  test.describe.configure({ mode: 'serial' });
+
+  test('Create Lead', async ({ page }) => {
+    console.log('Lead Created');
+  });
+
+  test('Edit Lead', async ({ page }) => {
+    console.log('Lead Edited');
+  });
+});
+
+
+test.describe.config({mode:'default'}):
+---------------------------------------
+
+means Playwright will use the standard execution behavior
+
+import { test, expect } from '@playwright/test';
+
+test.describe('Leads Module', () => {
+
+  test.describe.configure({ mode: 'default' });
+
+  test('Create Lead', async ({ page }) => {
+    console.log('Create Lead Test');
+  });
+
+  test('Edit Lead', async ({ page }) => {
+    console.log('Edit Lead Test');
+  });
+
+  test('Delete Lead', async ({ page }) => {
+    console.log('Delete Lead Test');
+  });
+
+});
+
+Qucik Comparision
+-----------------
+
+| Mode       | Execution                        | Dependency  | Failure Behavior                                       | Retries Behavior                                         |
+| ---------- | -------------------------------- | ----------- | ------------------------------------------------------ | -------------------------------------------------------- |
+| `parallel` | Tests run **simultaneously**     | Independent | One test failure **does not affect others**            | Only the **failed test is retried**                      |
+| `serial`   | Tests run **one after another**  | Dependent   | If one test **fails**, remaining tests **are skipped** | The **entire serial suite restarts from the first test** |
+| `default`  | Normal Playwright behavior       | Independent | One test failure **does not affect others**            | Only the **failed test is retried**                      |
+
+
+OOPs:
+----
+
+OOP (Object-Oriented Programming) is a programming method that structures software by designing 
+objects, where each object contains data (properties) and behavior (methods)
+
+
+Class:
+------
+
+> Template/blueprint for creating an object.
+> variables(properties) and methods are the members of the class.
+
+>> Property: Stores the data about an object/characteristics
+ex: car 
+door
+engine
+
+>> method(): function inside a class that defines action/behaviour of the object.
+ex: car
+close()
+accelerate()
+
+
+> Object:
+---------
+
+An object is a collection of properties and methods grouped together in a single entity.
+
+It refers to instance of the class.
+
+let obj=new classname()
+
+> Constructor()->Constructor is a special method in a class used to initialize object properties 
+automatically when an object is created.
+
+types
+-----
+
+1) Default Constructor()
+
+Constructor without parameters.
+
+ex:class Employee {
+  constructor() {
+    console.log("Default Constructor Called");
+  }
+}
+
+let obj1 = new Employee()
+
+
+2) Parameterized Constructor()
+
+Constructor with parameters to pass values during object creation.
+
+class Employee {
+  name:string="sindu"
+
+  constructor(empName:string) {
+    this.name = empName;
+    console.log(this.name);
+  }
+}
+
+let obj2 = new Employee("Sindhu");
+
+
+4 pillars of OOPs:
+------------------
+
+1. Encapsulation: Bundling data and the methods that operate on that data into a single unit 
+(class) and restricting access using access modifiers.
+
+2. Inheritance: A mechanism where a new class (child class) inherits properties and behaviors 
+from an existing class (parent class), allowing for code reusability and the creation of 
+hierarchical relationships.
+
+3. Polymorphism: The ability of different classes to be treated as instances of the same class 
+through a common interface,often achieved through method overriding or method overloading.
+
+4. Abstraction: The process of hiding the complex implementation details and showing only the 
+necessary features
+
+
+Features of OOPs:
+-----------------
+1. Reusable
+2. Maintainable
+3. Readable
+4. Scalable
+
+
+Access Modifiers:(Encapsulation)
+-----------------
+
+Access Modifiers control visibility of properties and methods in a class.
+
+1. Public (default): Accessible everywhere
+
+Ex: public name:string = "Sindhu"
+
+2. Private: Accessible only inside same class, access to the property from outside the class can be
+ controlled through get and set methods.
+
+EX: private salary:number = 50000;
+
+3. Protected: Accessible inside the class and inherited child class through extends keyword.
+
+Ex: 
+class Parent {
+  protected age:number = 25;
+}
+
+class Child extends Parent {
+  show() {
+    console.log(this.age);//read data before modification
+    this.age=30 // modify the data
+     console.log(this.age) //read data after modification
+  }
+}
+
+4. readonly : constant/final --> cannot change the assigned value
+
+Ex: public readonly esalary = 20000//avail everywhere but readonly
+
+5. static: belongs to the class and not to the object --> can be accessed without creating the 
+object of the class.
+
+Ex: private static email = "www.gmail.com" //explicit access modifier
+    static email = "www.gmail.com"  //default public
+
+//can be accessed using classname
+console.log(classname.email)
+
+Note: 1. Always use explicit modifiers that makes code more readable and maintainable
+      2. Static members are not inherited, but they are accessible in the child class using the 
+      parent or child Class name, not through object or this keyword.
+
+
+
+Q] When do we use static in a TypeScript framework?
+
+We use static when the data or behavior is:
+
+Common for the entire framework
+Does NOT depend on object state
+Utility / helper / configuration
+Shared across tests, pages, or services
+
+Static for Constants & Configuration
+Use case:
+
+URLs
+Timeouts
+
+class Config {
+  static BASE_URL = "https://leaftaps.com";
+  static TIMEOUT = 5000;
+}
+
+ex:
+Usage (no object needed)
+await page.goto(Config.BASE_URL);
+
+
+Single source of truth
+Easy to maintain
+
+
+Classroom Activity:
+------------------
+
+Create method add() as public, sub() as private, mul() as protected and try to access it outside
+the class.
+
+
+
+
+
+
+
+
